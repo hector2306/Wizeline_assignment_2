@@ -1,0 +1,366 @@
+{
+	"info": {
+		"_postman_id": "bba5f983-239e-4e38-9a7d-e0126d85b5f4",
+		"name": "Todoist",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PROJECT",
+			"item": [
+				{
+					"name": "Create",
+					"item": [
+						{
+							"name": "Create projects",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.environment.set(\"ID_project\",jsonData.id);\r",
+											"\r",
+											"    pm.test(\"Response time is less than 200ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+											"    });\r",
+											"\r",
+											"    pm.test(\"Set correct Name\", function(){\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.completed).to.eql(\"Wizeline-Assignment 2\");\r",
+											"   });\r",
+											"    \r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Wizeline-Assignment 2\"\r\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/projects",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"projects"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Task",
+					"item": [
+						{
+							"name": "Get tasks",
+							"item": [
+								{
+									"name": "Get Active Tasks",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"   pm.test(\"Task is not completed\", function(){\r",
+													"   var jsonData = pm.response.json();\r",
+													"   pm.expect(jsonData.completed).to.eql(false);\r",
+													"   });\r",
+													"    \r",
+													"    "
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/tasks/{{ID_Task}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"tasks",
+												"{{ID_Task}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Update Tasks",
+							"item": [
+								{
+									"name": "Update Tasks",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"       pm.test(\"Status code is 200\", function () {\r",
+													"           pm.response.to.have.status(204);\r",
+													"       });\r",
+													"   "
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"content\": \"hola que hace\"\r\n}"
+										},
+										"url": {
+											"raw": "{{URL}}/tasks/{{ID_Task}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"tasks",
+												"{{ID_Task}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Close a Task",
+							"item": [
+								{
+									"name": "Close a Task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"       pm.test(\"Status code is 200\", function () {\r",
+													"           pm.response.to.have.status(204);\r",
+													"       });"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "content",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{URL}}/tasks/{{ID_Task}}/close",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"tasks",
+												"{{ID_Task}}",
+												"close"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Create a Task",
+							"item": [
+								{
+									"name": "Create a new Tasks",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.environment.set(\"ID_Task\",jsonData.id);\r",
+													"    "
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\"content\": \"Buy Milk\", \"due_string\": \"tomorrow at 12:00\", \"due_lang\": \"en\", \"priority\": 4, \"project_id\": {{ID_project}} }"
+										},
+										"url": {
+											"raw": "{{URL}}/tasks",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Reopen a Task",
+							"item": [
+								{
+									"name": "Reopen a Task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"   pm.test(\"Status code is 200\", function () {\r",
+													"           pm.response.to.have.status(204);\r",
+													"       });\r",
+													"   "
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/tasks/{{ID_Task}}/reopen",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"tasks",
+												"{{ID_Task}}",
+												"reopen"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Delete a Task",
+							"item": [
+								{
+									"name": "Delete a task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"   pm.test(\"Status code is 200\", function () {\r",
+													"           pm.response.to.have.status(204);\r",
+													"       });\r",
+													"   "
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/tasks/{{ID_Task}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"tasks",
+												"{{ID_Task}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{Token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
